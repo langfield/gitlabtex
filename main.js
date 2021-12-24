@@ -20,10 +20,10 @@ function addScript(text, tag) {
     tag.text = text;
     tag.removeAttribute("src");
     const nonce = tag.nonce;
-    var newTag = document.createElement( 'script' );
+    var newTag = document.createElement('script');
     newTag.text = text;
     newTag.setAttribute("nonce", nonce);
-    document.body.appendChild( newTag );
+    document.body.appendChild(newTag);
     newTag.remove;
 }
 
@@ -36,23 +36,26 @@ function addScript(text, tag) {
     // This is the userscript code, which runs at the beginning of pageload
     // Say we wanted to prevent the loading of the jQuery script tag below:
     new MutationObserver((_, observer) => {
-      const mainScriptTag = document.querySelector('script[src*="main"]');
-      if (mainScriptTag) {
-        console.log('Found main.*.chunk.js script tag; now removing it!');
-        mainScriptTag.remove();
-          GM_xmlhttpRequest({
-              method: "GET",
-              url: mainScriptTag.src,
-              onload: function(response) {
-                  addScript(response.responseText, mainScriptTag);
-              }
-          });
+            const mainScriptTag = document.querySelector('script[src*="main"]');
+            if (mainScriptTag) {
+                console.log('Found main.*.chunk.js script tag; now removing it!');
+                mainScriptTag.remove();
+                GM_xmlhttpRequest({
+                    method: "GET",
+                    url: mainScriptTag.src,
+                    onload: function(response) {
+                        addScript(response.responseText, mainScriptTag);
+                    }
+                });
 
-        // We've done what we needed to do, no need for the MutationObserver anymore:
-        observer.disconnect();
-      }
-    })
-      .observe(document.documentElement, { childList: true, subtree: true });
+                // We've done what we needed to do, no need for the MutationObserver anymore:
+                observer.disconnect();
+            }
+        })
+        .observe(document.documentElement, {
+            childList: true,
+            subtree: true
+        });
     console.log("Patching Gitlab KaTeX rendering limits...");
 
 })();
