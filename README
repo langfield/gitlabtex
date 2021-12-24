@@ -1,0 +1,3 @@
+If using Tampermonkey / Chrome, you may need to enable experimental instant
+script injection to achieve this reliably - go to Tampermonkey Settings, Config
+mode: Advanced, scroll to the bottom, set Experimental Inject Mode to Instant.
